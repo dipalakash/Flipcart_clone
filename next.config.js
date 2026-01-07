@@ -1,20 +1,28 @@
+// // // /** @type {import('next').NextConfig} */
+// // // const nextConfig = {
+// // //   reactStrictMode: true,
+// // // };
+
+// // // export default nextConfig;
+
 // // /** @type {import('next').NextConfig} */
 // // const nextConfig = {
-// //   reactStrictMode: true,
+// //   output: "export",   // 👈 static export
 // // };
 
-// // export default nextConfig;
+// // module.exports = nextConfig;
 
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
-//   output: "export",   // 👈 static export
+//   output: "export",
 // };
 
 // module.exports = nextConfig;
 
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  output: "export",   // static site generate karega
 };
 
 module.exports = nextConfig;
