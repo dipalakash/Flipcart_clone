@@ -1,114 +1,3 @@
-// // export async function GET() {
-// //   const products = [
-// //     { id: 1, name: "Apple iPhone 15", price: 79999, image: "/images/apple.png" },
-// //     { id: 2, name: "Samsung S23", price: 69999, image: "/images/samsung.webp" },
-// //     { id: 3, name: "Oppo A57", price: 19999, image: "/images/Oppo-A57-4G.png" },
-// //     { id: 4, name: "OnePlus 11", price: 55999, image: "/images/apple.png" },
-// //     { id: 5, name: "Vivo V29", price: 29999, image: "/images/samsung.webp" },
-// //     { id: 6, name: "Realme 11 Pro", price: 24999, image: "/images/Oppo-A57-4G.png" },
-// //     { id: 7, name: "Apple iPhone 15", price: 79999, image: "/images/apple.png" },
-// //     { id: 8, name: "Samsung S23", price: 69999, image: "/images/samsung.webp" },
-// //     { id: 9, name: "Oppo A57", price: 19999, image: "/images/Oppo-A57-4G.png" },
-// //     { id: 10, name: "OnePlus 11", price: 55999, image: "/images/apple.png" },
-// //     { id: 11, name: "Vivo V29", price: 29999, image: "/images/samsung.webp" },
-// //     { id: 12, name: "Realme 11 Pro", price: 24999, image: "/images/Oppo-A57-4G.png" },
-// //   ];
-
-// //   return Response.json(products);
-// // }
-
-// export async function GET() {
-//   const products = [
-//     {
-//       id: 1,
-//       name: "Apple iPhone 15",
-//       price: 79999,
-//       category: "mobile",
-//       image: "/images/apple.png",
-//     },
-//     {
-//       id: 2,
-//       name: "Samsung S23",
-//       price: 69999,
-//       category: "mobile",
-//       image: "/images/samsung.webp",
-//     },
-//     {
-//       id: 3,
-//       name: "Oppo A57",
-//       price: 19999,
-//       category: "mobile",
-//       image: "/images/Oppo-A57-4G.png",
-//     },
-//     {
-//       id: 4,
-//       name: "MacBook Air M1",
-//       price: 99999,
-//       category: "laptop",
-//       image: "/images/macbook.png",
-//     },
-//     {
-//       id: 5,
-//       name: "HP Pavilion",
-//       price: 74999,
-//       category: "laptop",
-//       image: "/images/hp.png",
-//     },
-//     {
-//       id: 6,
-//       name: "Headphones",
-//       price: 2999,
-//       category: "accessories",
-//       image: "/images/headphone.png",
-//     },
-
-//     {
-//       id: 1,
-//       name: "Apple iPhone 15",
-//       price: 79999,
-//       category: "mobile",
-//       image: "/images/apple.png",
-//     },
-//     {
-//       id: 2,
-//       name: "Samsung S23",
-//       price: 69999,
-//       category: "mobile",
-//       image: "/images/samsung.webp",
-//     },
-//     {
-//       id: 3,
-//       name: "Oppo A57",
-//       price: 19999,
-//       category: "mobile",
-//       image: "/images/Oppo-A57-4G.png",
-//     },
-//     {
-//       id: 4,
-//       name: "MacBook Air M1",
-//       price: 99999,
-//       category: "laptop",
-//       image: "/images/macbook.png",
-//     },
-//     {
-//       id: 5,
-//       name: "HP Pavilion",
-//       price: 74999,
-//       category: "laptop",
-//       image: "/images/hp.png",
-//     },
-//     {
-//       id: 6,
-//       name: "Headphones",
-//       price: 2999,
-//       category: "accessories",
-//       image: "/images/headphone.png",
-//     },
-
-//   ];
-
-//   return Response.json(products);
-// }
 export async function GET() {
   const products = [
     /* ---------------- MOBILE ---------------- */
@@ -120,7 +9,7 @@ export async function GET() {
       brand: "Apple",
       ram: "8GB",
       storage: "128GB",
-      image: "/images/apple.png",
+      image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800&auto=format&fit=crop", // iPhone Black
     },
     {
       id: 2,
@@ -130,7 +19,7 @@ export async function GET() {
       brand: "Samsung",
       ram: "8GB",
       storage: "256GB",
-      image: "/images/samsung.webp",
+      image: "https://images.unsplash.com/photo-1610945265078-d86f3d292e01?q=80&w=800&auto=format&fit=crop", // Black Samsung
     },
     {
       id: 3,
@@ -140,7 +29,7 @@ export async function GET() {
       brand: "Oppo",
       ram: "6GB",
       storage: "128GB",
-      image: "/images/Oppo-A57-4G.png",
+      image: "https://images.unsplash.com/photo-1598331668826-20cecc596b86?q=80&w=800&auto=format&fit=crop", // Greenish/Blue Phone
     },
     {
       id: 4,
@@ -150,7 +39,7 @@ export async function GET() {
       brand: "Vivo",
       ram: "8GB",
       storage: "256GB",
-      image: "/images/Oppo-A57-4G.png",
+      image: "https://images.unsplash.com/photo-1567581935884-3349723552ca?q=80&w=800&auto=format&fit=crop", // Slim Mobile
     },
 
     /* ---------------- LAPTOP ---------------- */
@@ -163,7 +52,7 @@ export async function GET() {
       ram: "8GB",
       processor: "M1",
       screen: "13 inch",
-      image: "/images/macair.jpg",
+      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?q=80&w=800&auto=format&fit=crop", // Apple Laptop
     },
     {
       id: 6,
@@ -174,7 +63,7 @@ export async function GET() {
       ram: "16GB",
       processor: "i5",
       screen: "15.6 inch",
-      image: "/images/macair.jpg",
+      image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop", // Silver Laptop
     },
     {
       id: 7,
@@ -185,7 +74,7 @@ export async function GET() {
       ram: "16GB",
       processor: "i7",
       screen: "15.6 inch",
-      image: "/images/macair.jpg",
+      image: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=800&auto=format&fit=crop", // Dell Screen
     },
 
     /* ---------------- ACCESSORIES ---------------- */
@@ -196,7 +85,7 @@ export async function GET() {
       category: "accessories",
       brand: "Sony",
       type: "Headphone",
-      image: "/images/headphone.jpg",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop", // Classic Headlines
     },
     {
       id: 9,
@@ -205,7 +94,7 @@ export async function GET() {
       category: "accessories",
       brand: "Boat",
       type: "Earbuds",
-      image: "/images/headphone.jpg",
+      image: "https://images.unsplash.com/photo-1572569028738-411a29639580?q=80&w=800&auto=format&fit=crop", // Earbuds
     },
   ];
 
