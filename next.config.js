@@ -19,7 +19,6 @@
 
 // // module.exports = nextConfig;
 
-
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
 //   output: "export",   // static site generate karega

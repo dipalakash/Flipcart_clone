@@ -3,7 +3,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/productCard";
+import Link from "next/link";
 import FilterSidebar from "@/components/FilterSidebar";
+import Breadcrumb from "@/components/Breadcrumb";
+import SortBy from "@/components/SortBy";
 import { FILTER_CONFIG } from "@/config/filters";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +27,9 @@ export default function CategoryProductsPage() {
 
   // 🔥 Selected filters from left sidebar
   const [selectedFilters, setSelectedFilters] = useState({});
+
+  // 🔥 Sorting
+  const [sortBy, setSortBy] = useState("popularity");
 
   // 🔥 Pagination
   const [pagination, setPagination] = useState({
@@ -60,7 +66,7 @@ export default function CategoryProductsPage() {
 
   /* ---------------- ACTUAL FILTERING LOGIC ---------------- */
   const filteredProducts = useMemo(() => {
-    return allProducts.filter((product) => {
+    let result = allProducts.filter((product) => {
       // 1️⃣ Category filter (mandatory)
       if (product.category?.toLowerCase() !== category.toLowerCase()) {
         return false;
@@ -78,7 +84,19 @@ export default function CategoryProductsPage() {
 
       return true;
     });
-  }, [allProducts, category, selectedFilters]);
+
+    // 3️⃣ Sorting Logic
+    if (sortBy === "price_low_high") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price_high_low") {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "newest") {
+      result.sort((a, b) => b.id - a.id); // Assuming higher ID is newer
+    }
+    // "popularity" is default (array order or explicit popularity field if existed)
+
+    return result;
+  }, [allProducts, category, selectedFilters, sortBy]);
 
   /* ---------------- TANSTACK TABLE ---------------- */
   const table = useReactTable({
@@ -102,9 +120,18 @@ export default function CategoryProductsPage() {
   /* ---------------- UI ---------------- */
   return (
     <div className="container py-8 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 capitalize">
-        {category} Products
-      </h1>
+      <Breadcrumb category={category} />
+
+      <div className="flex flex-col md:flex-row items-baseline justify-between mb-6">
+        <h1 className="text-3xl font-bold capitalize">
+          {category} Products
+          <span className="text-base font-normal text-muted-foreground ml-2">
+            (Showing {pagination.pageIndex * pagination.pageSize + 1} - {Math.min((pagination.pageIndex + 1) * pagination.pageSize, filteredProducts.length)} of {filteredProducts.length} products)
+          </span>
+        </h1>
+
+        <SortBy currentSort={sortBy} onSortChange={setSortBy} />
+      </div>
 
       <div className="flex gap-8">
         {/* LEFT SIDEBAR */}
