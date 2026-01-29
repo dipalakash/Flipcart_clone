@@ -5,11 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SignupPage() {
+export default function LoginPage() {
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
-        mobile: "",
         password: ""
     });
     const [error, setError] = useState("");
@@ -26,7 +24,7 @@ export default function SignupPage() {
         setLoading(true);
 
         try {
-            const res = await fetch("/api/auth/register", {
+            const res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,17 +35,15 @@ export default function SignupPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.message || "Something went wrong");
+                throw new Error(data.message || "Invalid credentials");
             }
 
-            // Redirect to Login or Home after successful registration
-            // For now, let's redirect to home assuming auto-login in future or just simple redirect
-            // Ideally we should log them in immediately, but for now let's ask them to login
-            alert("Registration Successful! Please Login.");
-            router.push("/login"); // We need to create this or handle it here. 
-            // Since we don't have a separate login page yet, lets just redirect to home and maybe show a login modal? 
-            // Or better, let's create a Login toggle here.
+            // Redirect to Home after successful login
+            // The cookie will be set automatically by the API response header
+            router.push("/");
+            router.refresh(); // Refresh page to update any auth state in components
         } catch (err) {
+            console.error(err);
             setError(err.message);
         } finally {
             setLoading(false);
@@ -71,24 +67,12 @@ export default function SignupPage() {
                 {/* Content Section */}
                 <div className="p-8">
                     <h2 className="text-xl font-bold text-gray-900 mb-6">
-                        Signup
+                        Login
                     </h2>
 
                     {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="border border-gray-300 rounded-sm px-3 py-2 focus-within:border-gray-900 transition-colors">
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                className="w-full outline-none text-gray-900 placeholder-gray-400 text-sm font-medium"
-                                placeholder="Full Name"
-                                value={formData.name}
-                                onChange={handleChange}
-                            />
-                        </div>
-
                         <div className="border border-gray-300 rounded-sm px-3 py-2 focus-within:border-gray-900 transition-colors">
                             <input
                                 type="email"
@@ -97,19 +81,6 @@ export default function SignupPage() {
                                 className="w-full outline-none text-gray-900 placeholder-gray-400 text-sm font-medium"
                                 placeholder="Email Address"
                                 value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="relative border border-gray-300 rounded-sm px-3 py-2 focus-within:border-gray-900 transition-colors">
-                            <span className="absolute top-2.5 left-3 text-gray-500 text-sm font-medium">+91</span>
-                            <span className="absolute top-2.5 left-10 text-gray-300 text-sm">|</span>
-                            <input
-                                type="tel"
-                                name="mobile"
-                                className="w-full pl-10 outline-none text-gray-900 placeholder-gray-400 text-sm font-medium"
-                                placeholder="Mobile Number"
-                                value={formData.mobile}
                                 onChange={handleChange}
                             />
                         </div>
@@ -127,9 +98,7 @@ export default function SignupPage() {
                         </div>
 
                         <div className="flex items-start gap-2">
-                            <p className="text-[11px] text-gray-500 leading-tight">
-                                By continuing, I agree to the <Link href="/terms" className="text-pink-600 font-bold">Terms of Use</Link> & <Link href="/privacy" className="text-pink-600 font-bold">Privacy Policy</Link>
-                            </p>
+                            <Link href="/forgot-password" class="text-xs text-pink-600 font-bold">Forgot Password?</Link>
                         </div>
 
                         <button
@@ -137,13 +106,13 @@ export default function SignupPage() {
                             type="submit"
                             className="w-full bg-pink-600 text-white font-bold py-3 rounded-sm text-sm tracking-wide hover:bg-pink-700 transition-colors uppercase disabled:opacity-50"
                         >
-                            {loading ? "Creating Account..." : "Continue"}
+                            {loading ? "Logging in..." : "Login"}
                         </button>
                     </form>
 
                     <div className="mt-6 text-center">
                         <p className="text-xs text-gray-500">
-                            Already have an account? <Link href="/login" className="text-pink-600 font-bold">Login here</Link>
+                            New to Flipcart? <Link href="/signup" className="text-pink-600 font-bold">Create an account</Link>
                         </p>
                     </div>
 

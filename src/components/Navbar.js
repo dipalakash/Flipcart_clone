@@ -9,14 +9,37 @@ import { User, Heart, ShoppingBag, Search } from "lucide-react";
 
 export default function Navbar() {
   const { cart } = useCart();
-  const { wishlist } = useWishlist(); // ✅ WISHLIST
+  const { wishlist } = useWishlist();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState("");
   const [mounted, setMounted] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const timeoutRef = useRef(null);
+
+  // Check Auth State on Mount
+  useEffect(() => {
+    setMounted(true);
+    setSearch(searchParams.get("search") || "");
+    checkUser();
+  }, [searchParams]);
+
+  const checkUser = async () => {
+    try {
+      const res = await fetch("/api/auth/me");
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+      setUser(null);
+    }
+  };
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -31,11 +54,16 @@ export default function Navbar() {
     }, 200);
   };
 
-  // Sync input with URL (?search=)
-  useEffect(() => {
-    setMounted(true);
-    setSearch(searchParams.get("search") || "");
-  }, [searchParams]);
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      setUser(null);
+      router.push("/login");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   // ENTER → redirect to products page
   const handleKeyDown = (e) => {
@@ -96,44 +124,60 @@ export default function Navbar() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="flex flex-col items-center gap-1">
-              <User className="w-5 h-5 text-gray-700" />
-              <span className="text-xs font-bold">Profile</span>
+              <User className={`w-5 h-5 ${user ? "text-pink-600" : "text-gray-700"}`} />
+              <span className={`text-xs font-bold ${user ? "text-pink-600" : ""}`}>
+                {user ? "Profile" : "Login"}
+              </span>
             </div>
 
             {dropdownOpen && (
-              <div className="absolute right-0 top-full mt-1 w-[300px] bg-white shadow-xl border border-gray-100 z-50 rounded-sm">
-                <div className="p-4 border-b">
-                  <p className="text-sm font-bold text-gray-900">Hello Dipal</p>
-                  <p className="text-xs text-gray-500 mt-1">9428556877</p>
-                </div>
-                <ul className="py-2 text-sm text-gray-600">
-                  <li>
-                    <Link href="/orders" className="block px-4 py-2 hover:font-bold hover:text-black">
-                      Orders
+              <div className="absolute right-0 top-full mt-1 w-[280px] bg-white shadow-xl border border-gray-100 z-50 rounded-sm overflow-hidden">
+                {user ? (
+                  <>
+                    <div className="p-4 border-b bg-gray-50">
+                      <p className="text-sm font-bold text-gray-900">Hello, {user.name || "User"}</p>
+                      <p className="text-xs text-gray-500 mt-1">{user.email}</p>
+                    </div>
+                    <ul className="py-2 text-sm text-gray-600">
+                      <li>
+                        <Link href="/orders" className="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                          Orders
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/wishlist" className="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                          Wishlist
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/contact" className="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                          Contact Us
+                        </Link>
+                      </li>
+                      <li className="border-t my-1"></li>
+                      <li>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 hover:bg-pink-50 hover:text-pink-600 text-red-500 font-medium"
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                ) : (
+                  <div className="p-4 flex flex-col gap-3">
+                    <p className="text-sm text-gray-600 mb-1">Access your account</p>
+                    <Link href="/login">
+                      <button className="w-full bg-pink-600 text-white font-bold py-2 rounded-sm text-sm hover:bg-pink-700 transition-colors">
+                        Login
+                      </button>
                     </Link>
-                  </li>
-                  <li>
-                    <Link href="/wishlist" className="block px-4 py-2 hover:font-bold hover:text-black">
-                      Wishlist
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="block px-4 py-2 hover:font-bold hover:text-black">
-                      Contact Us
-                    </Link>
-                  </li>
-                  <li className="border-t my-1"></li>
-                  <li>
-                    <Link href="/profile/edit" className="block px-4 py-2 hover:font-bold hover:text-black">
-                      Edit Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <button className="w-full text-left px-4 py-2 hover:font-bold hover:text-black">
-                      Logout
-                    </button>
-                  </li>
-                </ul>
+                    <div className="text-xs text-center text-gray-500">
+                      New here? <Link href="/signup" className="text-pink-600 font-bold hover:underline">Sign up</Link>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
